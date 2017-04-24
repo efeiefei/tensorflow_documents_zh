@@ -13,5 +13,6 @@
   * [指南](Tutorial/README.md)
   * [性能](Performance/README.md)
 * [部署](Deploy/README.md)
-* [扩展](Extend/README.md)
+* [延伸](Extend/README.md)
 * [资源](Resources/README.md)
+
