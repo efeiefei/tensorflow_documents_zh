@@ -6,11 +6,15 @@
 
 在此，选取版本 r1.1 的文档进行翻译，r1.1与r1.0的文档内容区别不大，结构做了一些调整。
 
-具体内容查看 [目录](/SUMMARY.md)。
+
+
+**具体内容查看 **[**目录**](/SUMMARY.md)**。**
 
 
 
 本项目同时更新于 GitBook 与 GitHub。
+
+GitHub 项目地址：[https://github.com/efeiefei/tensorflow\_documents\_zh/](https://github.com/efeiefei/tensorflow_documents_zh/)
 
 GitBook 阅读地址：[https://efeiefei.gitbooks.io/tensorflow\_documents\_zh/](https://efeiefei.gitbooks.io/tensorflow_documents_zh/)
 
