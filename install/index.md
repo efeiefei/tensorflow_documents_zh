@@ -26,7 +26,7 @@ models in applications and are not as extensive as the Python APIs.
 
 如下指南描述了如何安装TensorFlow的不同版本。
 
-* [在Ubuntu上安装TensorFlow](/install/install_linux.md)
+* [在Ubuntu上安装TensorFlow](install/install_linux.md)
 
 * @{$install\_mac$Installing TensorFlow on Mac OS X}
 * @{$install\_windows$Installing TensorFlow on Windows}
