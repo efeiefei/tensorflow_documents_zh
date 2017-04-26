@@ -1,0 +1,35 @@
+{
+    "author": "虞连飞<efeigm@gmail.com>",
+    "description": "TensorFlow正式版中文文档",
+    "extension": null,
+    "generator": "site",
+    "links": {
+        "sharing": {
+            "all": null,
+            "facebook": null,
+            "google": null,
+            "twitter": null,
+            "weibo": null
+        },
+        "sidebar": {
+            "Github": "https://github.com/efeiefei/"
+        }
+    },
+    "output": null,
+    "pdf": {
+        "fontSize": 12,
+        "footerTemplate": null,
+        "headerTemplate": null,
+        "margin": {
+            "bottom": 36,
+            "left": 62,
+            "right": 62,
+            "top": 36
+        },
+        "pageNumbers": false,
+        "paperSize": "a4"
+    },
+    "plugins": [],
+    "title": "TensorFlow正式版中文文档",
+    "variables": {}
+}
