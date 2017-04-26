@@ -2,6 +2,7 @@
 
 * [介绍](README.md)
 * [安装](install/index.md)
+  * [在 Ubuntu 上安装 TensorFlow](install/install_linux.md)
 * [开发](get_started/index.md)
   * [Get Started](get_started/index.md)
   * [Programmers' Guide](programmers_guide/index.md)

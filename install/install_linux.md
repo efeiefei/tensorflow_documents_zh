@@ -1,288 +1,181 @@
-# Installing TensorFlow on Ubuntu
+# 在 Ubuntu 上安装 TensorFlow
 
-This guide explains how to install TensorFlow on Ubuntu. These instructions
-might also work on other Linux variants, but we have only tested (and we
-only support) these instructions on Ubuntu 14.04 or higher.
+这篇指南描述了如何在 Ubuntu 上安装 TensorFlow。这些实例也可能在其他 Linux 版本生效，但我们只在 Ubuntu 14.04 及更高的版本上测试过。
 
+## 确定 TensorFlow 版本
 
-## Determine which TensorFlow to install
+如下之中选择一种来安装:
 
-You must choose one of the following types of TensorFlow to install:
-
-  * **TensorFlow with CPU support only**. If your system does not have a
-    NVIDIA® GPU, you must install this version. Note that this version of
-    TensorFlow is typically much easier to install (typically,
-    in 5 or 10 minutes), so even if you have an NVIDIA GPU, we recommend
-    installing this version first.
-  * **TensorFlow with GPU support**. TensorFlow programs typically run
-    significantly faster on a GPU than on a CPU. Therefore, if your
-    system has a NVIDIA® GPU meeting the prerequisites shown below and you
-    need to run performance-critical applications, you should ultimately
-    install this version.
+  * **只支持 CPU 的 TensorFlow**。如果你的系统不支持 NVIDIA® GPU, 你必须安装这个版本。这个版本的 TensorFlow 通常安装起来比较简单（一般 5 到 10分钟），所以即使你拥有 NVIDIA GPU，我们也推荐首先安装这个版本。
+  * **支持 GPU 的 TensorFlow**. TensorFlow 在 GPU 上通常比在 CPU 上的执行的更快。所以如果你有符合如下要求的 NVIDIA® GPU 并且需要注重性能，可以随后安装这个版本。
 
 <a name="NVIDIARequirements"></a>
-### NVIDIA requirements to run TensorFlow with GPU support
+### 运行支持 GPU 的 TensorFlow 的 NVIDIA 要求
 
-If you are installing TensorFlow with GPU support using one of the
-mechanisms described in this guide, then the following NVIDIA software
-must be installed on your system:
+需要事先安装如下 NVIDIA 软件。
 
-  * CUDA® Toolkit 8.0. For details, see
-    [NVIDIA's documentation](http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A).
-    Ensure that you append the relevant Cuda pathnames to the
-    `LD_LIBRARY_PATH` environment variable as described in the
-    NVIDIA documentation.
-  * The NVIDIA drivers associated with CUDA Toolkit 8.0.
-  * cuDNN v5.1. For details, see
-    [NVIDIA's documentation](https://developer.nvidia.com/cudnn).
-    Ensure that you create the `CUDA_HOME` environment variable as
-    described in the NVIDIA documentation.
-  * GPU card with CUDA Compute Capability 3.0 or higher.  See
-    [NVIDIA documentation](https://developer.nvidia.com/cuda-gpus) for
-    a list of supported GPU cards.
-  * The libcupti-dev library, which is the NVIDIA CUDA Profile Tools Interface.
-    This library provides advanced profiling support. To install this library,
-    issue the following command:
+  * CUDA® Toolkit 8.0. 详见 [NVIDIA's documentation](http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A)。确保按照文档中描述的将 Cuda 相关路径加入到 `LD_LIBRARY_PATH` 环境变量中。
+  * CUDA Toolkit 8.0 相关的 NVIDIA 驱动。
+  * cuDNN v5.1。详见 [NVIDIA's documentation](https://developer.nvidia.com/cudnn)。确保创建了 `CUDA_HOME` 环境变量。
+  * CUDA Compute Capability 3.0 或更高的 GPU 芯片。支持的 GPU 芯片详见 [NVIDIA documentation](https://developer.nvidia.com/cuda-gpus) 。
+  * libcupti-dev 库, 该库提供了高级的性能支持，按如下命令安装：
 
     <pre>
     $ <b>sudo apt-get install libcupti-dev</b>
     </pre>
 
-If you have an earlier version of the preceding packages, please upgrade to
-the specified versions. If upgrading is not possible, then you may still run
-TensorFlow with GPU support, but only if you do the following:
+如果含有上述库但版本较老，先升级。如果不能升级，操作如下：
 
-  * Install TensorFlow from sources as documented in
-    @{$install_sources$Installing TensorFlow from Sources}.
-  * Install or upgrade to at least the following NVIDIA versions:
-    * CUDA toolkit 7.0 or greater
-    * cuDNN v3 or greater
-    * GPU card with CUDA Compute Capability 3.0 or higher.
+  * [从源码安装 TensorFlow](./install_linux.md)
+  * 安装或升级至少如下版本:
+    * CUDA toolkit 7.0 或更高
+    * cuDNN v3 或更高
+    * CUDA Compute Capability 3.0 或更高的 GPU 芯片。
 
 
-## Determine how to install TensorFlow
+## 确定如何安装 TensorFlow
 
-You must pick the mechanism by which you install TensorFlow. The
-supported choices are as follows:
+有如下选择：
 
   * [virtualenv](#InstallingVirtualenv)
   * ["native" pip](#InstallingNativePip)
   * [Docker](#InstallingDocker)
   * [Anaconda](#InstallingAnaconda)
 
-**We recommend the virtualenv installation.**
-[Virtualenv](https://virtualenv.pypa.io/en/stable/)
-is a virtual Python environment isolated from other Python development,
-incapable of interfering with or being affected by other Python programs
-on the same machine.  During the virtualenv installation process,
-you will install not only TensorFlow but also all the packages that
-TensorFlow requires.  (This is actually pretty easy.)
-To start working with TensorFlow, you simply need to "activate" the
-virtual environment.  All in all, virtualenv provides a safe and
-reliable mechanism for installing and running TensorFlow.
-
-Native pip installs TensorFlow directly on your system without going
-through any container system. **We recommend the native pip install for
-system administrators aiming to make TensorFlow available to everyone on a
-multi-user system.** Since a native pip installation is not walled-off in
-a separate container, the pip installation might interfere with other
-Python-based installations on your system. However, if you understand pip
-and your Python environment, a native pip installation often entails only
-a single command.
-
-Docker completely isolates the TensorFlow installation
-from pre-existing packages on your machine. The Docker container contains
-TensorFlow and all its dependencies. Note that the Docker image can be quite
-large (hundreds of MBs). You might choose the Docker installation if you are
-incorporating TensorFlow into a larger application architecture that already
-uses Docker.
-
-In Anaconda, you may use conda to create a virtual environment.
-However, within Anaconda, we recommend installing TensorFlow with the
-`pip install` command, not with the `conda install` command.
-
-**NOTE:** The conda package is community supported, not officially supported.
-That is, the TensorFlow team neither tests nor maintains the conda package.
-Use that package at your own risk.
+**推荐 virtualenv 安装**
+*（略过四种方法的说明，自行查找）*
 
 
 <a name="InstallingVirtualenv"></a>
-## Installing with virtualenv
+## virtualenv 安装
 
-Take the following steps to install TensorFlow with Virtualenv:
+步骤如下：
 
-  1. Install pip and virtualenv by issuing the following command:
+  1. 安装 pip 及 virtualenv：
 
      <pre>$ <b>sudo apt-get install python-pip python-dev python-virtualenv</b> </pre>
 
-  2. Create a virtualenv environment by issuing the following command:
+  2. 建立 virtualenv 环境：
 
      <pre>$ <b>virtualenv --system-site-packages</b> <i>targetDirectory</i> </pre>
 
-     The <code><em>targetDirectory</em></code> specifies the top of the
-     virtualenv tree.  Our instructions assume that
-     <code><em>targetDirectory</em></code> is `~/tensorflow`, but you may choose any directory.
+     <code><em>targetDirectory</em></code> 指明了 virtualenv 的位置。
 
-  3. Activate the virtualenv environment by issuing one of the following
-     commands:
+  3. 激活 virtualenv 环境：
 
-     <pre> $ <b>source ~/tensorflow/bin/activate</b> # bash, sh, ksh, or zsh
-     $ <b>source ~/tensorflow/bin/activate.csh</b>  # csh or tcsh</pre>
+     <pre>$ <b>source ~/tensorflow/bin/activate</b> # bash, sh, ksh, or zsh
+     $ <b>source ~/tensorflow/bin/activate.csh</b>  # csh or tcsh </pre>
 
-     The preceding <tt>source</tt> command should change your prompt
-     to the following:
+     如上操作会将提示符更改为如下：
 
      <pre> (tensorflow)$ </pre>
 
-  4. Issue one of the following commands to install TensorFlow in the active
-     virtualenv environment:
+  4. 如下命令中选取一个安装 TensorFlow：
 
-     <pre> (tensorflow)$ <b>pip install --upgrade tensorflow</b>      # for Python 2.7
+     <pre>(tensorflow)$ <b>pip install --upgrade tensorflow</b>      # for Python 2.7
      (tensorflow)$ <b>pip3 install --upgrade tensorflow</b>     # for Python 3.n
      (tensorflow)$ <b>pip install --upgrade tensorflow-gpu</b>  # for Python 2.7 and GPU
      (tensorflow)$ <b>pip3 install --upgrade tensorflow-gpu</b> # for Python 3.n and GPU</pre>
+     上述命令成功则跳过步骤5，否则执行步骤5。
 
-     If the preceding command succeeds, skip Step 5. If the preceding
-     command fails, perform Step 5.
+  5. (可选) 如果步骤4失败 (通常因为 pip 版本小于 8.1)：
 
-  5. (Optional) If Step 4 failed (typically because you invoked a pip version
-     lower than 8.1), install TensorFlow in the active virtualenv environment
-     by issuing a command of the following format:
-
-     <pre> (tensorflow)$ <b>pip install --upgrade</b> <i>TF_PYTHON_URL</i>   # Python 2.7
+     <pre>(tensorflow)$ <b>pip install --upgrade</b> <i>TF_PYTHON_URL</i>   # Python 2.7
      (tensorflow)$ <b>pip3 install --upgrade</b> <i>TF_PYTHON_URL</i>  # Python 3.N </pre>
 
-     where <code><em>TF_PYTHON_URL</em></code> identifies the URL of the
-     TensorFlow Python package. The appropriate value of
-     <code><em>TF_PYTHON_URL</em></code>depends on the operating system,
-     Python version, and GPU support. Find the appropriate value for
-     <code><em>TF_PYTHON_URL</em></code> for your system
-     [here](#the_url_of_the_tensorflow_python_package).  For example, if you
-     are installing TensorFlow for Linux, Python 2.7, and CPU-only support,
-     issue the following command to install TensorFlow in the active
-     virtualenv environment:
+     <code><em>TF_PYTHON_URL</em></code> 指定了 python tensorflow 的包的地址。<code><em>TF_PYTHON_URL</em></code> 依赖于操作系统、Python 版本、GPU 支持，从 [这里](#the_url_of_the_tensorflow_python_package) 找到合适的URL。如，安装 TensorFlow for Linux, Python 2.7、CPU-only，使用如下命令：
 
      <pre>(tensorflow)$ <b>pip3 install --upgrade \
      https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.1.0-cp34-cp34m-linux_x86_64.whl</b></pre>
 
-If you encounter installation problems, see
-[Common Installation Problems](#CommonInstallationProblems).
+如果遇到安装问题，详见 [常见安装问题](#CommonInstallationProblems).
 
 
-### Next Steps
+### 下一步
 
-After installing TensorFlow,
-[validate the installation](#ValidateYourInstallation).
+安装完毕之后： [验证安装结果](#ValidateYourInstallation)。
 
-Note that you must activate the virtualenv environment each time you
-use TensorFlow. If the virtualenv environment is not currently active,
-invoke one of the following commands:
+注意，每次使用 TensorFlow 前需要先激活 virtualenv 环境，使用如下命令：
 
 <pre>$ <b>source ~/tensorflow/bin/activate</b>      # bash, sh, ksh, or zsh 
 $ <b>source ~/tensorflow/bin/activate.csh</b>  # csh or tcsh</pre>
 
-When the virtualenv environment is active, you may run
-TensorFlow programs from this shell.  Your prompt will become
-the following to indicate that your tensorflow environment is active:
+激活之后可从当前 shell 执行命令，此时提示符变成如下：
 
 <pre>(tensorflow)$ </pre>
 
-When you are done using TensorFlow, you may deactivate the
-environment by invoking the `deactivate` function as follows:
+使用完毕 TensorFlow 可用 `deactivate` 命令退出当前 virtualenv 环境：
 
 <pre>(tensorflow)$ <b>deactivate</b> </pre>
 
-The prompt will revert back to your default prompt (as defined by the
-`PS1` environment variable).
+此时提示符将会返回到默认提示符 （在 `PS1` 环境变量中定义）。
 
 
-### Uninstalling TensorFlow
+### 卸载 TensorFlow
 
-To uninstall TensorFlow, simply remove the tree you created.
-For example:
+卸载 TensorFlow，删除相关目录即可：
 
 <pre>$ <b>rm -r</b> <i>targetDirectory</i> </pre>
 
 
 <a name="InstallingNativePip"></a>
-## Installing with native pip
-
-You may install TensorFlow through pip, choosing between a simple
-installation procedure or a more complex one.
-
-**Note:** The
-[REQUIRED_PACKAGES section of setup.py](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/pip_package/setup.py)
-lists the TensorFlow packages that pip will install or upgrade.
+## 原生 pip 安装
 
 
-### Prerequisite: Python and Pip
+**注意：** [setup.py 的 REQUIRED_PACKAGES 部分](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/pip_package/setup.py) 列出了 pip 将会安装或者升级的 TensorFlow 包。
 
-Python is automatically installed on Ubuntu.  Take a moment to confirm
-(by issuing a `python -V` command) that one of the following Python
-versions is already installed on your system:
+
+### 前提：Python 及 Pip
+
+Python 已经在 Ubuntu 中自动安装了。花谢时间确定（`python -v`）你的操作系统中含有如下 Python 版本中的一个：
 
   * Python 2.7
   * Python 3.3+
 
-The pip or pip3 package manager is *usually* installed on Ubuntu.  Take a
-moment to confirm (by issuing a `pip -V` or `pip3 -V` command)
-that pip or pip3 is installed.  We strongly recommend version 8.1 or higher
-of pip or pip3.  If Version 8.1 or later is not installed, issue the
-following command, which will either install or upgrade to the latest
-pip version:
+Pip 或 pip3 *通常*已经在 Ubuntu 中安装。花些时间确定（`pip -V`或`pip3 -V`）已经安装。强烈建议使用 8.1 或更高的版本。如果 8.1 或更高的版本没有安装，使用如下命令安装或升级到最新 pip 版本：
 
 <pre>
 $ <b>sudo apt-get install python-pip python-dev</b>
 </pre>
 
 
-### Install TensorFlow
+### 安装 TensorFlow
 
-Assuming the prerequisite software is installed on your Linux host,
-take the following steps:
+假定已经安装了如上必要软件，如下步骤安装 TensorFlow：
 
-  1. Install TensorFlow by invoking **one** of the following commands:
+  1. 如下命令之一安装：
 
      <pre> $ <b>pip install tensorflow</b>      # Python 2.7; CPU support (no GPU support)
      $ <b>pip3 install tensorflow</b>     # Python 3.n; CPU support (no GPU support)
      $ <b>pip install tensorflow-gpu</b>  # Python 2.7;  GPU support
      $ <b>pip3 install tensorflow-gpu</b> # Python 3.n; GPU support </pre>
 
-     If the preceding command runs to completion, you should now
-     [validate your installation](#ValidateYourInstallation).
+     如上命令执行完毕，可[验证安装结果](#ValidateYourInstallation).
 
-  2. (Optional.) If Step 1 failed, install the latest version of TensorFlow
-     by issuing a command of the following format:
+  2. (可选) 如果步骤1失败，使用如下命令安装：
 
      <pre>$ <b>sudo pip  install --upgrade</b> <i>TF_PYTHON_URL</i>   # Python 2.7
      $ <b>sudo pip3 install --upgrade</b> <i>TF_PYTHON_URL</i>   # Python 3.N </pre>
 
-     where <code><em>TF_PYTHON_URL</em></code> identifies the URL of the
-     TensorFlow Python package. The appropriate value of
-     <code><em>TF_PYTHON_URL</em></code>depends on the operating system,
-     Python version, and GPU support. Find the appropriate value for
-     <code><em>TF_PYTHON_URL</em></code> for your system
-     [here](#TF_PYTHON_URL).  For example, if you are installing TensorFlow
-     for Linux, Python version 3.4, and CPU-only support, issue the following
-     command:
+     <code><em>TF_PYTHON_URL</em></code> 指定了 python tensorflow 的包的地址。<code><em>TF_PYTHON_URL</em></code> 依赖于操作系统、Python 版本、GPU 支持，从 [这里](#the_url_of_the_tensorflow_python_package) 找到合适的URL。
+     例如，安装 TensorFlow for Linux, Python 3.4、CPU-only，使用如下命令：
 
      <pre>
      $ <b>sudo pip3 install --upgrade \
      https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.1.0-cp34-cp34m-linux_x86_64.whl</b>
      </pre>
 
-     If this step fails, see
-     [Common Installation Problems](#CommonInstallationProblems).
+     该步骤失败查询 [常见安装问题](#CommonInstallationProblems).
 
 
-### Next Steps
+### 下一步
 
-After installing TensorFlow, [validate your installation](#ValidateYourInstallation).
+安装完毕之后： [验证安装结果](#ValidateYourInstallation)。
 
 
-### Uninstalling TensorFlow
+### 卸载 TensorFlow
 
-To uninstall TensorFlow, issue one of following commands:
+如下命令卸载：
 
 <pre>
 $ <b>sudo pip uninstall tensorflow</b>  # for Python 2.7
@@ -291,75 +184,65 @@ $ <b>sudo pip3 uninstall tensorflow</b> # for Python 3.n
 
 
 <a name="InstallingDocker"></a>
-## Installing with Docker
+## Docker 安装
 
-Take the following steps to install TensorFlow through Docker:
+如下步骤通过 Docker 安装 TensorFlow：
 
-  1. Install Docker on your machine as described in the
+  1. 按描述在你的机器上安装 Docker
      [Docker documentation](http://docs.docker.com/engine/installation/).
-  2. Optionally, create a Linux group called <code>docker</code> to allow
-     launching containers without sudo as described in the
+  2. 可选，建立名为`docker`的用户组以便不通过 sudo 来登陆 container，
      [Docker documentation](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
-     (If you don't do this step, you'll have to use sudo each time
-     you invoke Docker.)
-  3. To install a version of TensorFlow that supports GPUs, you must first
-     install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker), which
-     is stored in github.
-  4. Launch a Docker container that contains one of the
+     （如果省略该步骤，每次启动 Docker 都需要使用 sudo。）
+  3. 为安装支持 GPU 的 TensorFlow 版本，需要首先
+     安装 [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
+  4. 启动含有
      [TensorFlow binary images](https://hub.docker.com/r/tensorflow/tensorflow/tags/).
+     之一的 Docker 容器。
 
-The remainder of this section explains how to launch a Docker container.
+本章节的其余部分描述了如何启动一个 Docker 容器。
 
 
 ### CPU-only
 
-To launch a Docker container with CPU-only support (that is, without
-GPU support), enter a command of the following format:
+使用如下命令启动一个 CPU-only Docker 容器：
 
 <pre>
 $ docker run -it <i>-p hostPort:containerPort TensorFlowCPUImage</i>
 </pre>
 
-where:
+其中：
 
-  * <tt><i>-p hostPort:containerPort</i></tt> is optional.
-    If you plan to run TensorFlow programs from the shell, omit this option.
-    If you plan to run TensorFlow programs as Jupyter notebooks, set both
-    <tt><i>hostPort</i></tt> and <tt><i>containerPort</i></tt>
-    to <tt>8888</tt>.  If you'd like to run TensorBoard inside the container,
-    add a second `-p` flag, setting both <i>hostPort</i> and <i>containerPort</i>
-    to 6006.
-  * <tt><i>TensorFlowCPUImage</i></tt> is required. It identifies the Docker
-    container. Specify one of the following values:
-    * <tt>gcr.io/tensorflow/tensorflow</tt>, which is the TensorFlow CPU binary image.
-    * <tt>gcr.io/tensorflow/tensorflow:latest-devel</tt>, which is the latest
-      TensorFlow CPU Binary image plus source code.
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i></tt>, which is the
-      specified version (for example, 1.0.1) of TensorFlow CPU binary image.
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel</tt>, which is
-      the specified version (for example, 1.0.1) of the TensorFlow GPU
-      binary image plus source code.
+  * <tt><i>-p hostPort:containerPort</i></tt> 可选。
+    如果计划从 shell 执行 TensorFlow 程序，忽略该选项。
+    如果计划作为`Jupyter notebooks`执行 TensorFlow 程序，设定
+    <tt><i>hostPort</i></tt> 及 <tt><i>containerPort</i></tt>
+    均为 <tt>8888</tt>。如果计划在容器中启动 TensorBoard，
+    添加第二个 `-p` 参数, 设定 <i>hostPort</i> 及 <i>containerPort</i>
+    均为 6006.
+  * <tt><i>TensorFlowCPUImage</i></tt> 是必须的. 它指定了使用的容器，如下选项中选取一个：
+    * <tt>gcr.io/tensorflow/tensorflow</tt>, TensorFlow CPU 镜像。
+    * <tt>gcr.io/tensorflow/tensorflow:latest-devel</tt>, 最新的
+      TensorFlow CPU 镜像外加源代码。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i></tt>，指定版本（如1.0.1）。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel</tt>，指定版本外加源代码。
 
-    <tt>gcr.io</tt> is the Google Container Registry. Note that some
-    TensorFlow images are also available at
-    [dockerhub](https://hub.docker.com/r/tensorflow/tensorflow/).
+    <tt>gcr.io</tt> 是 Google 的容器仓库。注意一些镜像同样可从
+    [dockerhub](https://hub.docker.com/r/tensorflow/tensorflow/)获取。
 
-For example, the following command launches the latest TensorFlow CPU binary image
-in a Docker container from which you can run TensorFlow programs in a shell:
+例如，如下命令在一个容器中启动最新的 TensorFlow CPU 镜像，你可以在 shell 中执行 TensorFlow 程序：
 
 <pre>
 $ <b>docker run -it gcr.io/tensorflow/tensorflow bash</b>
 </pre>
 
-The following command also launches the latest TensorFlow CPU binary image in a
-Docker container. However, in this Docker container, you can run TensorFlow
-programs in a Jupyter notebook:
+如下命令同样在一个容器中启动最新的 TensorFlow CPU 镜像。
+但是在该容器中，你可以在`Jupyter notebook`中执行 TensorFlow 程序：
 
 <pre>
 $ <b>docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow</b>
 </pre>
 
-Docker will download the TensorFlow binary image the first time you launch it.
+Docker 会在你第一次启动 TensorFlow 镜像是下载它。
 
 
 ### GPU support
@@ -420,8 +303,7 @@ For more details see the
 
 ### Next Steps
 
-You should now
-[validate your installation](#ValidateYourInstallation).
+安装完毕之后： [验证安装结果](#ValidateYourInstallation)。
 
 
 <a name="InstallingAnaconda"></a>
