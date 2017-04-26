@@ -262,14 +262,7 @@ $ <b>nvidia-docker run -it</b> <i>-p hostPort:containerPort TensorFlowGPUImage</
     如果计划作为`Jupyter notebooks`执行 TensorFlow 程序，设定
     <tt><i>hostPort</i></tt> 及 <tt><i>containerPort</i></tt>
     均为 <tt>8888</tt>。
-  * <i>TensorFlowCPUImage</i></tt> 是必须的. 它指定了使用的容器，如下选项中选取一个：
-    * <tt>gcr.io/tensorflow/tensorflow</tt>, TensorFlow CPU 镜像。
-    * <tt>gcr.io/tensorflow/tensorflow:latest-devel</tt>, 最新的
-      TensorFlow CPU 镜像外加源代码。
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i></tt>，指定版本（如1.0.1）。
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel，指定版本外加源代码。
-
-  * <i>TensorFlowCPUImage</i></tt> 是必须的. 它指定了使用的容器，如下选项中选取一个：
+  * <i>TensorFlowCPUImage</i> 是必须的. 它指定了使用的容器，如下选项中选取一个：
     * <tt>gcr.io/tensorflow/tensorflow:latest-gpu</tt>，最新 TensorFlow GPU 镜像。
     * <tt>gcr.io/tensorflow/tensorflow:latest-devel-gpu</tt>，最新 TensorFlow GPU 镜像外加源代码。
     * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-gpu</tt>，指定版本的 TensorFlow GPU 镜像。
