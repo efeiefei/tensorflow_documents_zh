@@ -10,7 +10,7 @@
   * **支持 GPU 的 TensorFlow**. TensorFlow 在 GPU 上通常比在 CPU 上的执行的更快。所以如果你有符合如下要求的 NVIDIA® GPU 并且需要注重性能，可以随后安装这个版本。
 
 <a name="NVIDIARequirements"></a>
-### 运行支持 GPU 的 TensorFlow 的 NVIDIA 要求
+### GPU support TensorFlow 的 NVIDIA 需求
 
 需要事先安装如下 NVIDIA 软件。
 
@@ -145,7 +145,7 @@ $ <b>sudo apt-get install python-pip python-dev</b>
 
   1. 如下命令之一安装：
 
-     <pre> $ <b>pip install tensorflow</b>      # Python 2.7; CPU support (no GPU support)
+     <pre>$ <b>pip install tensorflow</b>      # Python 2.7; CPU support (no GPU support)
      $ <b>pip3 install tensorflow</b>     # Python 3.n; CPU support (no GPU support)
      $ <b>pip install tensorflow-gpu</b>  # Python 2.7;  GPU support
      $ <b>pip3 install tensorflow-gpu</b> # Python 3.n; GPU support </pre>
@@ -242,98 +242,93 @@ $ <b>docker run -it gcr.io/tensorflow/tensorflow bash</b>
 $ <b>docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow</b>
 </pre>
 
-Docker 会在你第一次启动 TensorFlow 镜像是下载它。
+Docker 会在你第一次启动 TensorFlow 镜像时下载它。
 
 
 ### GPU support
 
-Prior to installing TensorFlow with GPU support, ensure that your system meets all
-[NVIDIA software requirements](#NVIDIARequirements).  To launch a Docker container
-with NVidia GPU support, enter a command of the following format:
+安装支持 GPU 的 TensorFlow 之前，确保你的系统满足
+[NVIDIA software requirements](#NVIDIARequirements)。To launch a Docker container
+通过如下命令，启动一个支持 GPU 的 TensorFlow 的 Docker 容器
 
 <pre>
 $ <b>nvidia-docker run -it</b> <i>-p hostPort:containerPort TensorFlowGPUImage</i>
 </pre>
 
-where:
+其中：
 
-  * <tt><i>-p hostPort:containerPort</i></tt> is optional. If you plan
-    to run TensorFlow programs from the shell, omit this option. If you plan
-    to run TensorFlow programs as Jupyter notebooks, set both
-    <tt><i>hostPort</i></tt> and <code><em>containerPort</em></code> to `8888`.
-  * <i>TensorFlowGPUImage</i> specifies the Docker container. You must
-    specify one of the following values:
-    * <tt>gcr.io/tensorflow/tensorflow:latest-gpu</tt>, which is the latest
-      TensorFlow GPU binary image.
-    * <tt>gcr.io/tensorflow/tensorflow:latest-devel-gpu</tt>, which is
-      the latest TensorFlow GPU Binary image plus source code.
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-gpu</tt>, which is the
-      specified version (for example, 0.12.1) of the TensorFlow GPU
-      binary image.
-    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel-gpu</tt>, which is
-      the specified version (for example, 0.12.1) of the TensorFlow GPU
-      binary image plus source code.
+  * <tt><i>-p hostPort:containerPort</i></tt> 可选。
+    如果计划从 shell 执行 TensorFlow 程序，忽略该选项。
+    如果计划作为`Jupyter notebooks`执行 TensorFlow 程序，设定
+    <tt><i>hostPort</i></tt> 及 <tt><i>containerPort</i></tt>
+    均为 <tt>8888</tt>。
+  * <i>TensorFlowCPUImage</i></tt> 是必须的. 它指定了使用的容器，如下选项中选取一个：
+    * <tt>gcr.io/tensorflow/tensorflow</tt>, TensorFlow CPU 镜像。
+    * <tt>gcr.io/tensorflow/tensorflow:latest-devel</tt>, 最新的
+      TensorFlow CPU 镜像外加源代码。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i></tt>，指定版本（如1.0.1）。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel，指定版本外加源代码。
 
-We recommend installing one of the `latest` versions. For example, the
-following command launches the latest TensorFlow GPU binary image in a
-Docker container from which you can run TensorFlow programs in a shell:
+  * <i>TensorFlowCPUImage</i></tt> 是必须的. 它指定了使用的容器，如下选项中选取一个：
+    * <tt>gcr.io/tensorflow/tensorflow:latest-gpu</tt>，最新 TensorFlow GPU 镜像。
+    * <tt>gcr.io/tensorflow/tensorflow:latest-devel-gpu</tt>，最新 TensorFlow GPU 镜像外加源代码。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-gpu</tt>，指定版本的 TensorFlow GPU 镜像。
+    * <tt>gcr.io/tensorflow/tensorflow:<i>version</i>-devel-gpu</tt>，指定版本的 TensorFlow GPU 镜像外加源代码。
+
+我们推荐安装一个`最新`版。如下命令可以在 Docker 容器中启动一个最新版本 TensorFlow GPU 镜像，
+你可以在其 shell 中执行TensorFlow 程序：
 
 <pre>
 $ <b>nvidia-docker run -it gcr.io/tensorflow/tensorflow:latest-gpu bash</b>
 </pre>
 
-The following command also launches the latest TensorFlow GPU binary image
-in a Docker container. In this Docker container, you can run TensorFlow
-programs in a Jupyter notebook:
+如下命令同样在一个容器中启动最新的 TensorFlow GPU 镜像。
+但是在该容器中，你可以在`Jupyter notebook`中执行 TensorFlow 程序：
 
 <pre>
 $ <b>nvidia-docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow:latest-gpu</b>
 </pre>
 
-The following command installs an older TensorFlow version (0.12.1):
+如下命令启动一个老版本的 TensorFlow：
 
 <pre>
 $ <b>nvidia-docker run -it -p 8888:8888 gcr.io/tensorflow/tensorflow:0.12.1-gpu</b>
 </pre>
 
-Docker will download the TensorFlow binary image the first time you launch it.
-For more details see the
+Docker 会在你第一次启动 TensorFlow 镜像时下载它。详情
 [TensorFlow docker readme](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/docker).
 
 
-### Next Steps
+### 下一步
 
 安装完毕之后： [验证安装结果](#ValidateYourInstallation)。
 
 
 <a name="InstallingAnaconda"></a>
-## Installing with Anaconda
+## Anaconda 安装
 
-Take the following steps to install TensorFlow in an Anaconda environment:
+按照如下步骤在 Anaconda 环境中安装 TensorFlow：
 
-  1. Follow the instructions on the
+  1. 按说明下载并安装 Anaconda：
      [Anaconda download site](https://www.continuum.io/downloads)
-     to download and install Anaconda.
 
   2. Create a conda environment named <tt>tensorflow</tt> to run a version
-     of Python by invoking the following command:
+  2. 建立一个 conda 环境，命名为 <tt>tensorflow</tt>，以便运行某个 Python 版本：
 
      <pre>$ <b>conda create -n tensorflow</b></pre>
 
-  3. Activate the conda environment by issuing the following command:
+  3. 激活 anaconda 环境：
 
-     <pre> $ <b>source activate tensorflow</b>
-     (tensorflow)$  # Your prompt should change </pre>
+     <pre>$ <b>source activate tensorflow</b>
+     (tensorflow)$  # 你的提示符应变化 </pre>
 
-  4. Issue a command of the following format to install
-     TensorFlow inside your conda environment:
+  4. 在你的 conda 环境中安装 TensorFlow：
 
-     <pre> (tensorflow)$ <b>pip install --ignore-installed --upgrade</b> <i>TF_PYTHON_URL</i></pre>
+     <pre>(tensorflow)$ <b>pip install --ignore-installed --upgrade</b> <i>TF_PYTHON_URL</i></pre>
 
-     where <code><em>TF_PYTHON_URL</em></code> is the
-     [URL of the TensorFlow Python package](#the_url_of_the_tensorflow_python_package).
-     For example, the following command installs the CPU-only version of
-     TensorFlow for Python 3.4:
+     其中 <code><em>TF_PYTHON_URL</em></code> 是
+     [TensorFlow Python 包地址](#the_url_of_the_tensorflow_python_package).
+     比如：如下命令可以为 Python 3.4 安装 CPU-only 版本的 TensorFlow：
 
      <pre>
      (tensorflow)$ <b>pip install --ignore-installed --upgrade \
@@ -341,39 +336,38 @@ Take the following steps to install TensorFlow in an Anaconda environment:
 
 
 <a name="ValidateYourInstallation"></a>
-## Validate your installation
+## 验证安装结果
 
-To validate your TensorFlow installation, do the following:
+按如下操作验证 TensorFlow 安装结果：
 
-  1. Ensure that your environment is prepared to run TensorFlow programs.
-  2. Run a short TensorFlow program.
+  1. 确保准备环境完备
+  2. 执行一个简短的 TensorFlow 程序
 
 
-### Prepare your environment
+### 准备环境
 
 If you installed on native pip, virtualenv, or Anaconda, then
 do the following:
+如果通过原生 pip、virtualenv、Anaconda 安装，做如下操作：
 
-  1. Start a terminal.
-  2. If you installed with virtualenv or Anaconda, activate your container.
-  3. If you installed TensorFlow source code, navigate to any
-     directory *except* one containing TensorFlow source code.
+  1. 启动一个 terminal
+  2. 如果通过 virtualenv 或 Anaconda 安装，激活容器
+  3. 如果你安装了 TensorFlow 源码，定位到不含源码的任一目录中
 
-If you installed through Docker, start a Docker container
-from which you can run bash. For example:
+如果通过 Docker 安装，启动一个可以通过 bash 操作的 Docker 容器：
 
 <pre>
 $ <b>docker run -it gcr.io/tensorflow/tensorflow bash</b>
 </pre>
 
 
-### Run a short TensorFlow program
+### 执行一个简短的 TensorFlow 程序
 
-Invoke python from your shell as follows:
+在 shell 中调用 Python：
 
 <pre>$ <b>python</b></pre>
 
-Enter the following short program inside the python interactive shell:
+在 Python 交互式环境中输入如下命令：
 
 ```python
 >>> import tensorflow as tf
@@ -382,26 +376,20 @@ Enter the following short program inside the python interactive shell:
 >>> print(sess.run(hello))
 ```
 
-If the system outputs the following, then you are ready to begin writing
-TensorFlow programs:
+如果系统输出如下，则安装成功：
 
 <pre>Hello, TensorFlow!</pre>
 
-If you are new to TensorFlow, see @{$get_started$Getting Started with TensorFlow}.
+如果你新接触 TensorFlow，参考[初识 TensorFlow](../get_started)进行下一步学习。
 
-If the system outputs an error message instead of a greeting, see [Common
-installation problems](#common_installation_problems).
+如果系统输出错误信息而非欢迎信息，查看[常见安装问题](#common_installation_problems)。
 
-## Common installation problems
+## 常见安装问题
 
-We are relying on Stack Overflow to document TensorFlow installation problems
-and their remedies.  The following table contains links to Stack Overflow
-answers for some common installation problems.
-If you encounter an error message or other
-installation problem not listed in the following table, search for it
-on Stack Overflow.  If Stack Overflow doesn't show the error message,
-ask a new question about it on Stack Overflow and specify
-the `tensorflow` tag.
+我们依靠 Stack Overflow 来编写 TensorFlow 安装问题及解决方案的文档。
+如下表格包含了 Stack Overflow 上比较常见的安装问题的连接。
+如果你遇到了不在列表中的新的错误信息或者其他安装问题，请在 Stack Overflow 上搜索。
+如果搜索不到，请在 Stack Overflow 上提出一个新的问题，并打上 `tensorflow` 的标签。
 
 <table>
 <tr> <th>Stack Overflow Link</th> <th>Error Message</th> </tr>
@@ -487,16 +475,13 @@ the `tensorflow` tag.
 
 
 <a name="TF_PYTHON_URL"></a>
-## The URL of the TensorFlow Python package
+## TensorFlow Python 包地址
 
-A few installation mechanisms require the URL of the TensorFlow Python package.
-The value you specify depends on three factors:
+一些安装方法需要 TensorFlow Python 包，它的地址依赖于几个方面：
 
-  * operating system
-  * Python version
-  * CPU only vs. GPU support
-
-This section documents the relevant values for Linux installations.
+  * 操作系统
+  * Python 版本
+  * CPU-only 还是 GPU support
 
 
 ### Python 2.7
@@ -514,8 +499,9 @@ GPU support:
 https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp27-none-linux_x86_64.whl
 </pre>
 
-Note that GPU support requires the NVIDIA hardware and software described in
-[NVIDIA requirements to run TensorFlow with GPU support](#NVIDIARequirements).
+注意 GPU 支持需要满足 NVIDIA 硬件需求以及在
+[GPU support TensorFlow 的 NVIDIA 需求](#NVIDIARequirements)
+中描述的软件。
 
 
 ### Python 3.4
@@ -533,8 +519,9 @@ GPU support:
 https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp34-cp34m-linux_x86_64.whl
 </pre>
 
-Note that GPU support requires the NVIDIA hardware and software described in
-[NVIDIA requirements to run TensorFlow with GPU support](#NVIDIARequirements).
+注意 GPU 支持需要满足 NVIDIA 硬件需求以及在
+[GPU support TensorFlow 的 NVIDIA 需求](#NVIDIARequirements)
+中描述的软件。
 
 
 ### Python 3.5
@@ -553,8 +540,9 @@ https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp35-cp
 </pre>
 
 
-Note that GPU support requires the NVIDIA hardware and software described in
-[NVIDIA requirements to run TensorFlow with GPU support](#NVIDIARequirements).
+注意 GPU 支持需要满足 NVIDIA 硬件需求以及在
+[GPU support TensorFlow 的 NVIDIA 需求](#NVIDIARequirements)
+中描述的软件。
 
 ### Python 3.6
 
@@ -572,28 +560,22 @@ https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp36-cp
 </pre>
 
 
-Note that GPU support requires the NVIDIA hardware and software described in
-[NVIDIA requirements to run TensorFlow with GPU support](#NVIDIARequirements).
+注意 GPU 支持需要满足 NVIDIA 硬件需求以及在
+[GPU support TensorFlow 的 NVIDIA 需求](#NVIDIARequirements)
+中描述的软件。
 
 <a name="Protobuf31"></a>
-## Protobuf pip package 3.1
+## Protobuf pip 包 3.1
 
-You can skip this section unless you are seeing problems related
-to the protobuf pip package.
+如果没有遇到和 protobuf pip 包相关的问题，你可以跳过这个部分。
 
-**NOTE:** If your TensorFlow programs are running slowly, you might
-have a problem related to the protobuf pip package.
+**注意：** 如果你的 TensorFlow 运行缓慢，你可能遇到了一个 protobuf pip 包相关的问题。
 
-The TensorFlow pip package depends on protobuf pip package version 3.1. The
-protobuf pip package downloaded from PyPI (when invoking
-<tt>pip install protobuf</tt>) is a Python-only library containing
-Python implementations of proto serialization/deserialization that can run
-**10x-50x slower** than the C++ implementation. Protobuf also supports a
-binary extension for the Python package that contains fast
-C++ based proto parsing.  This extension is not available in the
-standard Python-only pip package.  We have created a custom binary
-pip package for protobuf that contains the binary extension. To install
-the custom binary protobuf pip package, invoke one of the following commands:
+TensorFlow pip 包依赖于 protobuf pip 包 3.1。
+从 PyPI 下载的 protobuf 是 proto 序列化/反序列化的纯 Python 实现的库，
+其速度比 C++ 实现**慢10-50倍**。Protobuf 支持二进制扩展，速度更快，基于 C++。
+但该扩展无法在纯Python实现的 pip 包中获取。我们制作了包含该二进制扩展的protobuf pip 包。
+如下命令可安装该自定义的 protobuf pip 包：
 
   * for Python 2.7:
 
@@ -607,11 +589,10 @@ the custom binary protobuf pip package, invoke one of the following commands:
   $ <b>pip3 install --upgrade \
   https://storage.googleapis.com/tensorflow/linux/cpu/protobuf-3.1.0-cp35-none-linux_x86_64.whl</b></pre>
 
-Installing this protobuf package will overwrite the existing protobuf package.
-Note that the binary pip package already has support for protobufs
-larger than 64MB, which should fix errors such as these:
+安装这个 protobuf 包会覆盖已经存在的 protobuf 包。
+注意该二进制 pip 包已经支持大于 64MB 的问题，修复了如下问题：
 
 <pre>[libprotobuf ERROR google/protobuf/src/google/protobuf/io/coded_stream.cc:207]
-A protocol message was rejected because it was too big (more than 67108864 bytes).
-To increase the limit (or to disable these warnings), see
-CodedInputStream::SetTotalBytesLimit() in google/protobuf/io/coded_stream.h.</pre>
+Protocol message 被拒绝，因为太大（大于 67108864 字节）。
+为增大限制或禁用报警，
+在 google/protobuf/io/coded_stream.h 中查看 CodedInputStream::SetTotalBytesLimit()</pre>
