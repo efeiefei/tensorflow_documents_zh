@@ -1,32 +1,21 @@
 
-# Getting Started With TensorFlow
+# 初识 TensorFlow
 
-This guide gets you started programming in TensorFlow. Before using this guide,
-@{$install$install TensorFlow}. To get the most out of
-this guide, you should know the following:
+本指南让你开始进行 TensorFlow 编程。开始之前，[安装 TensorFlow](../install/index.md)，
+为了充分利用本指南，您应该了解以下内容：
 
-*   How to program in Python.
-*   At least a little bit about arrays.
-*   Ideally, something about machine learning. However, if you know little or
-    nothing about machine learning, then this is still the first guide you
-    should read.
+*   Python 如何编程。
+*   至少对数组了解一点。
+*   最好了解一些机器学习。然而，如果你对机器学习了解很少或不了解，你仍然应该首先阅读本指南。
 
-TensorFlow provides multiple APIs. The lowest level API--TensorFlow Core--
-provides you with complete programming control. We recommend TensorFlow Core for
-machine learning researchers and others who require fine levels of control over
-their models. The higher level APIs are built on top of TensorFlow Core. These
-higher level APIs are typically easier to learn and use than TensorFlow Core. In
-addition, the higher level APIs make repetitive tasks easier and more consistent
-between different users. A high-level API like tf.contrib.learn helps you manage
-data sets, estimators, training and inference. Note that a few of the high-level
-TensorFlow APIs--those whose method names contain `contrib`-- are still in
-development. It is possible that some `contrib` methods will change or become
-obsolete in subsequent TensorFlow releases.
+TensorFlow 提供了多种API。最底层的 API--TensorFlow Core-- 可以让你完全控制自己的程序。
+我们推荐机器学习研究人员和其他需要很好控制他们的模型的人员使用TensorFlow Core。
+更高级别的API构建在 TensorFlow Core 之上。这些更高级的API通常比 TensorFlow Core 更容易学习和使用。此外，较高级别的 API 使重复任务更容易，不同用户之间更一致。像 tf.contrib.learn 这样的高级API可以帮助您管理数据集，进行估计，训练和推理。注意：一些高级 API（名称包含`contrib`的API）仍然在开发中。
+有些`contrib`方法之后可能会改变或在随后的 TensorFlow 版本中废弃。
 
-This guide begins with a tutorial on TensorFlow Core. Later, we
-demonstrate how to implement the same model in tf.contrib.learn. Knowing
-TensorFlow Core principles will give you a great mental model of how things are
-working internally when you use the more compact higher level API.
+本指南从 TensorFlow Core 的教程开始。随后我们会演示如何通过 tf.contrib.learn 实现相同的模型。
+了解 TensorFlow Core 的原理将你您提供一个 *mental model*，以便你在使用更紧凑更高级的 API
+时理解内部是如何工作的
 
 # Tensors
 
