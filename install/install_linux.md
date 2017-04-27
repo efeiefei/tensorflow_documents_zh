@@ -305,7 +305,6 @@ Docker 会在你第一次启动 TensorFlow 镜像时下载它。详情
   1. 按说明下载并安装 Anaconda：
      [Anaconda download site](https://www.continuum.io/downloads)
 
-  2. Create a conda environment named <tt>tensorflow</tt> to run a version
   2. 建立一个 conda 环境，命名为 <tt>tensorflow</tt>，以便运行某个 Python 版本：
 
      <pre>$ <b>conda create -n tensorflow</b></pre>
@@ -468,7 +467,7 @@ $ <b>docker run -it gcr.io/tensorflow/tensorflow bash</b>
 
 
 <a name="TF_PYTHON_URL"></a>
-## TensorFlow Python 包地址
+## TensorFlow Python 包地址（`TF_PYTHON_URL`）
 
 一些安装方法需要 TensorFlow Python 包，它的地址依赖于几个方面：
 
